@@ -1,4 +1,25 @@
-#map {
-    width: 500px;
-    height: 500px;
+#logo{
+    max-width: 80%;
+    margin-bottom: 20px;
 }
+
+#map {
+    width: 100%;
+    height: 500px;
+    border: 1px solid grey;
+    text-align: left;
+}
+
+.divCenter {
+    padding: 20px;
+    background-color: gainsboro;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-left: 1px solid darkslategrey;
+    border-right: 1px solid darkslategrey;
+    border-bottom: 1px solid darkslategrey;
+    box-shadow: gray;
+    text-align: center;
+}
+
+.gm-style-iw + div {display: none;}
