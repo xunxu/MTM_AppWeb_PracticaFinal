@@ -8,6 +8,33 @@ $( document ).ready(function() {
     var pos = null;
     var infoWindow = null;
 
+    Parse.initialize("nNSAII71paQgULD4citOAcogYM37PE7gRBRnCNio", "xdZS7dMfuZhxMSVOY6BM33t0LlWd8xJ11WJ9yGFe");
+    var places = Parse.Object.extend("places");
+    var query = new Parse.Query(places);
+    query.find({
+        success: function(results) {
+            // Do something with the returned Parse.Object values
+            if(results.length>0){
+                var htmlSelector = "<option disabled selected>-- Selecciona un lugar --</option>";
+                for (var i = 0; i < results.length; i++) {
+                    var object = results[i];
+                    htmlSelector = htmlSelector + "<option>" + object.get('place') + "</option>";
+                }
+                document.getElementById("selector").innerHTML = htmlSelector;
+            }
+        },
+        error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+            document.getElementById("selector").innerHTML = "<option disabled selected>-- Selecciona un lugar --</option>" +
+                "<option>Salamanca</option>" +
+                "<option>Zamora</option>" +
+                "<option>Ávila</option>" +
+                "<option>Madrid</option>" +
+                "<option>Ciudad Rodrigo</option>";
+        }
+    });
+
+
     function initialize() {
 
 
@@ -109,18 +136,25 @@ $( document ).ready(function() {
             $.getJSON(urlCurrentWeather, function(currentWeather){
                 var urlIcon = "http://openweathermap.org/img/w/" + currentWeather.weather[0].icon + ".png";
                 html = "<h3>" + currentWeather.name + ", " + currentWeather.sys.country + "</h3>" +
-                    "<div class='col-xs-6'>" +
-                    "<img src='" + urlIcon + "'>" +
-                    "<div>" + currentWeather.weather[0].main + "</div>" +
+                    "<div class='row'>" +
+                        "<div class='col-xs-6'>" +
+                            "<img src='" + urlIcon + "'>" +
+                            "<div id='currentWeatherDiv'>" + currentWeather.weather[0].main + "</div>" +
+                        "</div>" +
+                        "<div class='col-xs-6'>" +
+                            "<div class='row'>" +
+                                "<div id='currentTempDiv'>" + parseInt(currentWeather.main.temp) + "&#8451</div>" +
+                            "</div>" +
+                            "<div class='row'>" +
+                                "<div id='tempMaxMinDiv'><b>" + parseInt(tempMax) + "&#8451 </b>" + parseInt(tempMin) + "&#8451</div>" +
+                            "</div>" +
+                        "</div>" +
                     "</div>" +
-                    "<div class='col-xs-6'>" +
-                    "<div>" + parseInt(currentWeather.main.temp) + "&#8451</div>" +
-                    "<div>" + parseInt(tempMax) + "&#8451</div>" +
-                    "<div>" + parseInt(tempMin) + "&#8451</div>" +
-                    "</div>" +
-                    "<div>" +
-                    "<div>Humedad: " + currentWeather.main.humidity + "%</div>" +
-                    "<div>Viento: " + parseInt(currentWeather.wind.speed) + "kph</div>" +
+                    "<div class='row' id='humidityWindDiv'>" +
+                        "<div class='col-xs-12'>" +
+                            "<div>Humedad: " + currentWeather.main.humidity + "%</div>" +
+                            "<div>Viento: " + parseInt(currentWeather.wind.speed) + "kph</div>" +
+                        "</div>" +
                     "</div>";
                 infoWindow.setContent(html);
             });
@@ -128,10 +162,16 @@ $( document ).ready(function() {
     }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
+        /*infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
             'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.');
+            'Error: Your browser doesn\'t support geolocation.');*/
+        pos = {
+            lat: 40.9701039,
+            lng: -5.663539699999999
+        };
+        showWeatherByPosition(pos);
+        map.setCenter(pos);
     }
 
 });

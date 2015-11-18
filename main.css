@@ -56,3 +56,21 @@ body {
     text-overflow: ellipsis;
     width: 90%;
 }
+
+#currentWeatherDiv {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#currentTempDiv {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#tempMaxMinDiv {
+    font-size: 15px;
+}
+
+#humidityWindDiv {
+    margin-bottom: 10px;
+}
